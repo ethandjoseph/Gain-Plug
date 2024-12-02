@@ -4,7 +4,7 @@
 ![Gain Plug screenshot](https://github.com/ethandjoseph/Gain-Plug/blob/main/GainPlugScreenshot.png)
 
 ## Code
-A simple JUCE 8 project consisting of
+JUCE 8 project consisting of
 1. Reusable Gain processor
 2. Reusable (JUCE-based) VerticalSliderComponent.h GUI component
 3. Reusable Stereo Linear Digital VU Meter
@@ -13,6 +13,6 @@ A simple JUCE 8 project consisting of
 - VST3
 - 64 bit
 
-# Platform Compatibility
+### Platform Compatibility
 - Windows
 - 64 bit
