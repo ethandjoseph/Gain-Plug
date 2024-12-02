@@ -9,8 +9,7 @@ A simple JUCE 8 project consisting of
 2. Reusable (JUCE-based) VerticalSliderComponent.h GUI component
 3. Reusable Stereo Linear Digital VU Meter
 
-[View the release here](https://github.com/ethandjoseph/Gain-Plug/releases/tag/v0.1)
-## Format
+## [Release](https://github.com/ethandjoseph/Gain-Plug/releases/tag/v0.1)
 - VST3
 - 64 bit
 
