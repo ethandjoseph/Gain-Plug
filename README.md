@@ -1,2 +1,19 @@
 # Gain Plug
  My first DSP Plugin - Simple Gain Control with VU meters
+
+![Gain Plug screenshot](https://github.com/ethandjoseph/Gain-Plug/blob/main/GainPlugScreenshot.png)
+
+## Code
+A simple JUCE 8 project consisting of
+1. Reusable Gain processor
+2. Reusable (JUCE-based) VerticalSliderComponent.h GUI component
+3. Reusable Stereo Linear Digital VU Meter
+
+[View the release here](https://github.com/ethandjoseph/Gain-Plug/releases/tag/v0.1)
+## Format
+- VST3
+- 64 bit
+
+# Platform Compatibility
+- Windows
+- 64 bit
