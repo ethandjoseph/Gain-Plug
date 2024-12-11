@@ -6,7 +6,7 @@
 ## Code
 JUCE 8 project consisting of
 1. [Reusable Gain processor](https://github.com/ethandjoseph/Gain-Plug/blob/main/Source/Gain.cpp)
-2. [Reusable (JUCE-based) VerticalSliderComponent.h GUI component](https://github.com/ethandjoseph/Gain-Plug/blob/main/Source/VerticalSliderComponent.h)
+2. Vertical Slider gain control
 3. [Reusable Stereo Linear Digital VU Meter](https://github.com/ethandjoseph/Gain-Plug/blob/main/Source/VUMeterComponent.h)
 
 ## [Release](https://github.com/ethandjoseph/Gain-Plug/releases/tag/v0.1)
