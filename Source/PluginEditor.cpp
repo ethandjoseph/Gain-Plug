@@ -2,12 +2,16 @@
 #include "PluginEditor.h"
 
 GainPlugAudioProcessorEditor::GainPlugAudioProcessorEditor (GainPlugAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p),
-    dBGainSlider(audioProcessor.getAPVTS(), "dBGain")
+    : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    dBGainSlider.setSliderStyle(juce::Slider::LinearVertical);
+    dBGainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 100, 20);
     addAndMakeVisible(inputVUMeter);
     addAndMakeVisible(dBGainSlider);
     addAndMakeVisible(outputVUMeter);
+
+    dBGainSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "GAIN_DB", dBGainSlider);
+    
     setSize (200, 300);
 }
 

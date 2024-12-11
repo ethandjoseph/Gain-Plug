@@ -8,13 +8,14 @@
 class GainProcessor
 {
 public:
-    GainProcessor() {}
+    GainProcessor() : gain(1.0f) {}
+    virtual ~GainProcessor() = default;
 
-    void setGain(float gainValue) { gain = gainValue; }
+    void setGain(float gainValue) { gain = juce::jlimit(0.0f, 2.0f, gainValue); }
     void process(juce::AudioBuffer<float>& buffer);
 
 private:
-    float gain = 1.0f;
+    float gain;
 };
 
 #endif

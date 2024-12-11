@@ -7,8 +7,6 @@
     <GROUP id="{F21C2BA2-5CD9-1293-04B2-5CCF949DD493}" name="Source">
       <FILE id="GEjJ1R" name="VUMeterComponent.h" compile="0" resource="0"
             file="Source/VUMeterComponent.h"/>
-      <FILE id="Md5K6t" name="VerticalSliderComponent.h" compile="0" resource="0"
-            file="Source/VerticalSliderComponent.h"/>
       <FILE id="yFuWPz" name="Gain.cpp" compile="1" resource="0" file="Source/Gain.cpp"/>
       <FILE id="RbtWOi" name="Gain.h" compile="0" resource="0" file="Source/Gain.h"/>
       <FILE id="U7GRLj" name="PluginProcessor.cpp" compile="1" resource="0"

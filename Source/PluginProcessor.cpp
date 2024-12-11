@@ -2,21 +2,6 @@
 #include "PluginEditor.h"
 #include "Gain.h"
 
-juce::AudioProcessorValueTreeState::ParameterLayout GainPlugAudioProcessor::createParameterLayout()
-{
-    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(
-        "dBGain",             // Parameter ID
-        "Gain",               // Parameter name
-        -60.0f,               // Min value in dB
-        0.0f,                 // Max value in dB
-        -12.0f                // Default value in dB
-    ));
-
-    return { params.begin(), params.end() };
-}
-
 GainPlugAudioProcessor::GainPlugAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
@@ -98,7 +83,7 @@ void GainPlugAudioProcessor::changeProgramName (int index, const juce::String& n
 
 void GainPlugAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    gainProcessor.setGain(1.0f);
+    //gainProcessor.setGain(0.5f);
 }
 
 void GainPlugAudioProcessor::releaseResources()
@@ -125,9 +110,11 @@ void GainPlugAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         editor->inputVUMeter.processBuffer(buffer);
     }
 
-    float dBValue = apvts.getRawParameterValue("dBGain")->load();
+    float dBValue = apvts.getRawParameterValue("GAIN_DB")->load();
+
     float linearGain = juce::Decibels::decibelsToGain(dBValue);
     gainProcessor.setGain(linearGain);
+
     gainProcessor.process(buffer);
 
     if (auto* editor = dynamic_cast<GainPlugAudioProcessorEditor*>(getActiveEditor()))
@@ -164,4 +151,20 @@ void GainPlugAudioProcessor::setStateInformation (const void* data, int sizeInBy
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new GainPlugAudioProcessor();
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout GainPlugAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(
+        "GAIN_DB",            // Parameter ID
+        "Gain",               // Parameter name
+        // juce::NormalisableRange<float>(-60.0f, 0.0f, 0.01f), // Range: -60 to 0 dB
+        -60.0f,               // minValue
+        6.0f,                 // maxValue
+        -12.0f                // Default value in dB
+        ));
+
+    return { params.begin(), params.end() };
 }
