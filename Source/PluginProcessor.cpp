@@ -84,6 +84,17 @@ void GainPlugAudioProcessor::changeProgramName (int index, const juce::String& n
 void GainPlugAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     //gainProcessor.setGain(0.5f);
+    inputRMSLevelLeft.reset(sampleRate, 0.5); // 0.5 = rampLength in seconds
+    inputRMSLevelRight.reset(sampleRate, 0.5);
+
+    inputRMSLevelLeft.setCurrentAndTargetValue(-100.f);
+    inputRMSLevelRight.setCurrentAndTargetValue(-100.f);
+
+    outputRMSLevelLeft.reset(sampleRate, 0.5); // 0.5 = rampLength in seconds
+    outputRMSLevelRight.reset(sampleRate, 0.5);
+
+    outputRMSLevelLeft.setCurrentAndTargetValue(-100.f);
+    outputRMSLevelRight.setCurrentAndTargetValue(-100.f);
 }
 
 void GainPlugAudioProcessor::releaseResources()
@@ -105,10 +116,28 @@ void GainPlugAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
 {
     juce::ScopedNoDenormals noDenormals;
 
-    if (auto* editor = dynamic_cast<GainPlugAudioProcessorEditor*>(getActiveEditor()))
+    inputRMSLevelLeft.skip(buffer.getNumSamples());
+    inputRMSLevelRight.skip(buffer.getNumSamples());
     {
-        editor->inputVUMeter.processBuffer(buffer);
+        const auto value = juce::Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+        if (value < inputRMSLevelLeft.getCurrentValue())
+            inputRMSLevelLeft.setTargetValue(value);
+        else
+            inputRMSLevelLeft.setCurrentAndTargetValue(value);
     }
+
+    {
+        const auto value = juce::Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+        if (value < inputRMSLevelRight.getCurrentValue())
+            inputRMSLevelRight.setTargetValue(value);
+        else
+            inputRMSLevelRight.setCurrentAndTargetValue(value);
+    }
+
+    /*inputRMSLevelLeft = juce::Decibels::gainToDecibals(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+    inputRMSLevelRight = juce::Decibels::gainToDecibals(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+    outputRMSLevelLeft = juce::Decibels::gainToDecibals(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+    outputRMSLevelRight = juce::Decibels::gainToDecibals(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));*/
 
     float dBValue = apvts.getRawParameterValue("GAIN_DB")->load();
 
@@ -117,9 +146,22 @@ void GainPlugAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
 
     gainProcessor.process(buffer);
 
-    if (auto* editor = dynamic_cast<GainPlugAudioProcessorEditor*>(getActiveEditor()))
+    outputRMSLevelLeft.skip(buffer.getNumSamples());
+    outputRMSLevelRight.skip(buffer.getNumSamples());
     {
-        editor->outputVUMeter.processBuffer(buffer);
+        const auto value = juce::Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+        if (value < outputRMSLevelLeft.getCurrentValue())
+            outputRMSLevelLeft.setTargetValue(value);
+        else
+            outputRMSLevelLeft.setCurrentAndTargetValue(value);
+    }
+
+    {
+        const auto value = juce::Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+        if (value < outputRMSLevelRight.getCurrentValue())
+            outputRMSLevelRight.setTargetValue(value);
+        else
+            outputRMSLevelRight.setCurrentAndTargetValue(value);
     }
 }
 //==========================================================================================================//
@@ -148,9 +190,17 @@ void GainPlugAudioProcessor::setStateInformation (const void* data, int sizeInBy
         apvts.replaceState(juce::ValueTree::fromXml(*xml));
 }
 
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+float GainPlugAudioProcessor::getRMSValue(const int bus, const int channel) const
 {
-    return new GainPlugAudioProcessor();
+    jassert(channel == 0 || channel == 1);
+    if (bus == 0 && channel == 0)
+        return inputRMSLevelLeft.getCurrentValue();
+    if (bus == 0 && channel == 1)
+        return inputRMSLevelRight.getCurrentValue();
+    if (bus == 1 && channel == 0)
+        return outputRMSLevelLeft.getCurrentValue();
+    if (bus == 1 && channel == 1)
+        return outputRMSLevelRight.getCurrentValue();
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout GainPlugAudioProcessor::createParameterLayout()
@@ -164,7 +214,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout GainPlugAudioProcessor::crea
         -60.0f,               // minValue
         6.0f,                 // maxValue
         -12.0f                // Default value in dB
-        ));
+    ));
 
     return { params.begin(), params.end() };
+}
+
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+{
+    return new GainPlugAudioProcessor();
 }

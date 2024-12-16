@@ -1,19 +1,19 @@
 #pragma once
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "VUMeterComponent.h"
+#include "VerticalMeter.h"
 
-class GainPlugAudioProcessorEditor  : public juce::AudioProcessorEditor
+class GainPlugAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Timer
 {
 public:
     GainPlugAudioProcessorEditor (GainPlugAudioProcessor&);
     ~GainPlugAudioProcessorEditor() override;
 
+    void timerCallback() override;
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    VUMeterComponent inputVUMeter;
-    VUMeterComponent outputVUMeter;
+    VerticalGradientMeter inputVUMeterLeft, inputVUMeterRight, outputVUMeterLeft, outputVUMeterRight;
 
 private:
     juce::Slider dBGainSlider;

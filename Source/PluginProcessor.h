@@ -38,9 +38,11 @@ public:
 
     juce::AudioProcessorValueTreeState apvts;
 
+    float getRMSValue(const int bus, const int channel) const;
+
 private:
     GainProcessor gainProcessor;
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
-
+    juce::LinearSmoothedValue<float> inputRMSLevelLeft, inputRMSLevelRight, outputRMSLevelLeft, outputRMSLevelRight;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GainPlugAudioProcessor)
 };
