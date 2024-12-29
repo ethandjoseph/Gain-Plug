@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="t3ZuKs" name="Gain Plug" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone,buildVST3"
-              companyName="Owninstrument" companyWebsite="Owninstrument.io">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildAAX,buildAU,buildAUv3,buildLV2,buildStandalone,buildVST3"
+              companyName="Earth Mover DSP" companyWebsite="www.EarthMoverDSP.com"
+              pluginAAXCategory="8192" lv2Uri="http://earthmoverdsp.com/plugins/GainPlug">
   <MAINGROUP id="Y4UKDm" name="Gain Plug">
     <GROUP id="{F21C2BA2-5CD9-1293-04B2-5CCF949DD493}" name="Source">
       <FILE id="M4zvsa" name="VerticalMeter.h" compile="0" resource="0" file="Source/VerticalMeter.h"/>
