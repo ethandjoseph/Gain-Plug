@@ -13,9 +13,12 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void showGainSliderPopup();
+
     VerticalGradientMeter inputVUMeterLeft, inputVUMeterRight, outputVUMeterLeft, outputVUMeterRight;
 
 private:
+    juce::TextButton loadButton;
     juce::Slider dBGainSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> dBGainSliderAttachment;
 
