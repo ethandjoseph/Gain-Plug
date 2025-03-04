@@ -1,4 +1,6 @@
 # Gain Plug
+![GitHub License](https://badgen.net/github/license/ethandjoseph/Gain-Plug)
+
  My first DSP Plugin - Simple Gain Control with VU meters
 
 ![Gain Plug screenshot](https://github.com/ethandjoseph/Gain-Plug/blob/main/GainPlugScreenshot.png)
